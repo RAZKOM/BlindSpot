@@ -1,0 +1,9 @@
+/target
+*.json
+!package.json
+Cargo.lock
+.env
+*.exe
+*.pdb
+*.psd
+config.json
