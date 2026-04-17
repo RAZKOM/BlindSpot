@@ -59,6 +59,13 @@ Output: `target/release/blindspot.exe`
 
 ---
 
+## Support
+
+BlindSpot is free and open source. If it's been useful, a tip is always appreciated but never expected.
+
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/razcom)
+
+---
 ## License
 
 MIT — free to use, modify, and distribute.
