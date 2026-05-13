@@ -1,0 +1,44 @@
+# Publishes a GitHub Release when you push a version tag (e.g. v1.0.1).
+# Artifacts match README: blindspot.exe and blindspot.zip
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build release binary
+        run: cargo build --release
+
+      - name: Package artifacts
+        shell: pwsh
+        run: |
+          $exe = "target/release/blindspot.exe"
+          if (-not (Test-Path $exe)) { throw "Release binary not found: $exe" }
+          Copy-Item $exe "blindspot.exe"
+          Compress-Archive -Path blindspot.exe -DestinationPath blindspot.zip -Force
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            blindspot.exe
+            blindspot.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
